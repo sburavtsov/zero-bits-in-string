@@ -100,6 +100,38 @@ int main(int argc, const char * argv[]) {
         
         NSLog(@"Zero fast bits: %tu", intCountZeroBits_fast([test cStringUsingEncoding:NSUTF8StringEncoding]));
         NSLog(@"Zero general bits: %tu", intCountZeroBits_general([test cStringUsingEncoding:NSUTF8StringEncoding]));
+        
+        NSUInteger M = 10;
+        NSUInteger N = M + 1; // one number duplicates, so actual array will be larger by 1 element
+        
+        // initialize array, it is not important is it will be sorted or no as we will just calculate sum later
+        NSUInteger values[N];
+
+        // fill values
+        for (NSUInteger index = 1; index < N; index++) {
+            
+            values[index] = index;
+        }
+
+        // make "duplicate"
+        NSUInteger duplicate = (arc4random() % M) + 1;
+        values[0] = duplicate;
+
+        for (NSUInteger logIndex = 0; logIndex < N; logIndex++) {
+            NSLog(@"Value at %tu[%tu]", logIndex, values[logIndex]);
+        }
+        
+        NSUInteger actualSum = 0;
+        for (NSUInteger index = 0; index < N; index++) {
+            
+            actualSum += values[index];
+        }
+        
+        NSUInteger arifmeticScaleSum = M * (M + 1) / 2;
+        
+        NSUInteger duplicateFound = actualSum - arifmeticScaleSum;
+        
+        NSLog(@"Duplicate is: %tu", duplicateFound);
     }
     return 0;
 }
